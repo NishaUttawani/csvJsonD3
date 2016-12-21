@@ -169,28 +169,31 @@ function toJsonRegions(csvData){
   } //end of for loop
 
 
-  var obj={};
-  
-  obj["north"]={
-    fat:fats[0]/count[0],
-    protien: protien[0]/count[0],
-    carbohydrate:carbohydrate[0]/count[0]
-  };
-
-  obj["central"]={
-    fat:fats[1]/count[1],
-    protien: protien[1]/count[1],
-    carbohydrate:carbohydrate[1]/count[1]
-  };
-
-  obj["south"]={
-    fat:fats[2]/count[2],
-    protien: protien[2]/count[2],
-    carbohydrate:carbohydrate[2]/count[2]
-  }
-
-
+  var obj={}; 
+  obj["region"]="north";
+  obj["fat"]=fats[0]/count[0];
+  obj["protien"]= protien[0]/count[0];
+  obj["carbohydrate"]=carbohydrate[0]/count[0];
   records.push(obj);
+
+  var obj={}; 
+  obj["region"]="central";
+  obj["fat"]=fats[1]/count[1];
+  obj["protien"]= protien[1]/count[1];
+  obj["carbohydrate"]=carbohydrate[1]/count[1];
+  records.push(obj);
+  
+
+
+  
+  var obj={}; 
+  obj["region"]="south";
+  obj["fat"]=fats[2]/count[2];
+  obj["protien"]= protien[2]/count[2];
+  obj["carbohydrate"]=carbohydrate[2]/count[2];
+  records.push(obj);
+
+  
   return records;
 
   

@@ -3,58 +3,48 @@
 	{
 
 	
-	"north": {
+	"region": "north",
 
-	
 	
 	"fat": 4.4420930232558185,
 
 	
-	
 	"protien": 2.1963911680167247,
 
 	
-	
 	"carbohydrate": 8.234632871701066
 
-	
 	},
 
-	
-	"central": {
+	{
 
 	
+	"region": "central",
+
 	
 	"fat": 7.909132590122251,
 
 	
-	
 	"protien": 4.615835522445347,
 
 	
-	
 	"carbohydrate": 16.5414443428399
 
-	
 	},
 
-	
-	"south": {
+	{
 
 	
+	"region": "south",
+
 	
 	"fat": 7.346143491712714,
 
 	
-	
 	"protien": 3.451554033149174,
 
 	
-	
 	"carbohydrate": 15.26878895027624
-
-	
-	}
 
 	}
 ]
