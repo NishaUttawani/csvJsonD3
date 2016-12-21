@@ -12,6 +12,14 @@
       fill:#f85c26;
    }
   
+  .d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+  }
     body{
       background: beige;
     }
@@ -26,6 +34,7 @@
 
  <h1 align="center">Stacked bar Graph</h1>
  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+ <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
  
  <script>
    var margin={top:20, bottom:165, left:300, right:50},
@@ -48,6 +57,15 @@
    .scale(vertical)
    .orient("left");
 
+   var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Frequency:</strong> <span style='color:red'>" + d.y + "</span>";
+  })
+
+   
+
    //adding svg elements
    var svg=d3.select("body").append("svg")
    .attr("width", width + margin.left + margin.right)
@@ -55,6 +73,8 @@
    .append("g")
    .attr("transform",
      "translate(" + margin.left + "," + margin.top + ")");
+
+   svg.call(tip);
 
    //loading data
    d3.json("../csv_json/FFacts.json",function(err,data){
@@ -108,7 +128,9 @@
      .attr("height", function (d) {
        return vertical(d.y0) - vertical(d.y + d.y0);
      })
-     .attr("width", horizontal.rangeBand());
+     .attr("width", horizontal.rangeBand())
+     .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
 
 
      svg.append("g")
