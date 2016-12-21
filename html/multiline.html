@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MultiSeriesLineGraph</title>
+  <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa" rel="stylesheet"> 
+  <style>
+    body {
+      font: 15px sans-serif;
+      background:  seashell ;
+
+    }
+    path {
+
+     stroke-width: 2;
+     fill: none;
+   }
+    .line {
+
+      stroke-width: 2px;
+    }
+   .axis path,
+   .axis line {
+     fill: none;
+     stroke: grey;  /*x and y axis line*/
+     stroke-width: 1.5;
+   }
+ </style>
+  
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body  style="margin-right:100px">
+
+  <div id="multiline">
+   <h1 style="text-align:center; margin-bottom:50px; color:darkslategrey; font-family: 'Aref Ruqaa', serif">
+    Regions Vs (Fat,Protien,carbohydrates)</h1>
+   <h4 style="color:tomato;text-align:right; margin-right:100px">Carbohydrathydrate</h4>
+   <h4 style="color:teal;text-align:right; margin-right:100px">Fat</h4>
+   <h4 style="color:blueviolet;text-align:right; margin-right:100px">Protien</h4>
+ </div>
+
+ <script>
+
+  var margin={top:40, bottom:100, left:300, right:200},//set margin
+  width=1200-margin.left-margin.right,
+  height=400-margin.top-margin.bottom
+  var horizontal=d3.scale.ordinal().rangeRoundBands([0,width],0.12),
+  vertical=d3.scale.linear().rangeRound([height,0]);
+
+  var x = d3.scale.ordinal() //set x axis position
+  .rangeRoundBands([0,width], 0.2);
+  var y = d3.scale.linear().range([height, 0]); //set y axis position
+
+  var xAxis = d3.svg.axis().scale(x)
+  .orient("bottom");
+
+  var yAxis = d3.svg.axis().scale(y)
+  .orient("left");
+
+  var valueline1 = d3.svg.line()
+  .x(function(d) { return x(d.region); })
+  .y(function(d) { return y(d.fat); });
+
+  var valueline2 = d3.svg.line()
+  .x(function(d) { return x(d.region); })
+  .y(function(d) { return y(d.protien); });
+
+  var valueline3 = d3.svg.line()
+
+  .x(function(d) { return x(d.region); })
+  .y(function(d) { return y(d.carbohydrate ); });
+
+
+  var svg = d3.select("#multiline")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+d3.json("../csv_json/FFactsRegions.json", function(error, data) {
+  
+  data.forEach(function(d) { //get the data
+    d.region = d.region;
+    d.fat = +d.fat;
+    d.protien = +d.protien;
+    d.carbohydrate= +d.carbohydrate;
+  });
+
+  x.domain(data.map(function(d){
+    return d.region;
+  }));
+
+
+  y.domain([0, d3.max(data, function(d) { console.log(d.fat +"" + d.protien+"" + d.carbohydrate) 
+    return Math.max(d.fat, d.protien,d.carbohydrate);
+  })]);
+
+  svg.append("path")    
+  .attr("class", "line")
+  .style("stroke", "tomato")    //regions Vs Carbohydrates
+  .attr("d", valueline1(data))
+  .attr("transform", "translate(85,0)" );
+
+  svg.append("path")    
+  .attr("class", "line")
+    .style("stroke", "teal")  //regions Vs Fat
+    .attr("d", valueline2(data))
+    .attr("transform", "translate(85,0)" );
+
+  svg.append("path")    
+    .attr("class", "line")
+      .style("stroke", "blueviolet")   //regions Vs Protien
+      .attr("d", valueline3(data))
+      .attr("transform", "translate(85,0)" );
+
+  svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .append("text")
+      .attr("transform", "translate(" + width + ",0)")
+      .attr("dy","4em")
+      .attr("dx","-380px")
+      .style("font-size","20px")
+      .style("font-weight","bold")
+      .style("fill","palevioletred")
+      .text("Regions");
+
+  svg.append("g")
+      .attr("class", "axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("dy","-3em")
+      .attr("dx", "0em")
+      .style("text-anchor", "end")
+      .style("font-size","20px")
+      .style("font-weight","bold")
+      .style("fill","palevioletred")
+      .text("Fat,  Protien,   Carbohydrate  ");
+       var text = svg.append("svg:text");
+    });
+
+  </script>
+
+</body>
+</html>
